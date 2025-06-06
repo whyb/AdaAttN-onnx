@@ -23,7 +23,7 @@ def parse_args():
         help="Path to the style image"
     )
     parser.add_argument(
-        "--output_path", default="result/output.jpg", required=False,
+        "--output_path", default="results/output.jpg", required=False,
         help="Where to save the stylized output image"
     )
     return parser.parse_args()

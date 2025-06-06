@@ -37,8 +37,7 @@
 - 依赖库安装：
   
   ```bash
-  pip install torch-2.5.1+cu124-cp310-cp310-win_amd64.whl
-  pip install torchvision==0.20+cu124 -f https://download.pytorch.org/whl/torch_stable.html
+  pip install torch==2.5.1+cu124 torchvision==0.20+cu124 -f https://download.pytorch.org/whl/torch_stable.html
   pip install torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124
   pip install dominate
   pip install numpy==1.26.4

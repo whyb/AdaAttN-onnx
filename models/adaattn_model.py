@@ -235,16 +235,16 @@ class AdaAttNModel(BaseModel):
 
 
     def export_onnx(self, export_path="adaattn_model.onnx"):
-        # 定义一个包装器，目的是将原模型的输入转换为两个张量 (context, style)
+        # 定义一个包装器，目的是将原模型的输入转换为两个张量 (content, style)
         # 并输出 self.cs
         class AdaAttNONNXWrapper(torch.nn.Module):
             def __init__(self, model):
                 super(AdaAttNONNXWrapper, self).__init__()
                 self.model = model
 
-            def forward(self, context, style):
+            def forward(self, content, style):
                 # 将输入赋值给模型的对应成员变量
-                self.model.c = context
+                self.model.c = content
                 self.model.s = style
                 # 调用原模型的 forward 计算
                 self.model.forward()
@@ -256,21 +256,21 @@ class AdaAttNModel(BaseModel):
         wrapper.eval()
 
         # 创建 dummy 输入
-        dummy_context = torch.randn(1, 3, 1024, 1024).to(self.device)
+        dummy_content = torch.randn(1, 3, 1024, 1024).to(self.device)
         dummy_style = torch.randn(1, 3, 1024, 1024).to(self.device)
 
-        # 导出 ONNX 模型，其中输入以 (context, style) 命名，输出为 "output"
+        # 导出 ONNX 模型，其中输入以 (content, style) 命名，输出为 "output"
         torch.onnx.export(
             wrapper,
-            (dummy_context, dummy_style),
+            (dummy_content, dummy_style),
             export_path,
             export_params=True,
             opset_version=16,
             do_constant_folding=True,
-            input_names=["context", "style"],
+            input_names=["content", "style"],
             output_names=["output"],
             dynamic_axes={
-                "context": {0: "batch_size", 2: "height", 3: "width"},
+                "content": {0: "batch_size", 2: "height", 3: "width"},
                 "style": {0: "batch_size", 2: "height", 3: "width"},
                 "output": {0: "batch_size", 2: "height", 3: "width"}
             }

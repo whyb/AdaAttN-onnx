@@ -27,7 +27,7 @@
 - 经过onnxslim图优化后，**AdaAttN** ONNX 模型文件大小约 **102MB**。
 
 ### 模型输入输出
-- **输入 1**：`context`，形状 `[b, 3, h, w]`
+- **输入 1**：`content`，形状 `[b, 3, h, w]`
 - **输入 2**：`style`，形状 `[b, 3, h, w]`
 - **输出**：`output`，形状 `[b, 3, h, w]`
 
@@ -63,7 +63,7 @@
 ## 效果展示
 
 以下为本仓库风格迁移的部分效果示例：
-左1：Context
+左1：content
 左2：Style
 右1：Result
 

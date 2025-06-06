@@ -1,17 +1,4 @@
 #!/usr/bin/env python3
-"""
-infer_onnx.py
-
-Usage:
-    python infer_onnx.py \
-        --onnx_path path/to/adaattn.onnx \
-        --context_path path/to/context.jpg \
-        --style_path path/to/style.jpg \
-        --output_path path/to/output.jpg
-
-Loads a context image and a style image, runs the ONNX AdaAttN model with ONNX Runtime,
-and saves the stylized output image.
-"""
 
 import argparse
 import numpy as np
@@ -24,19 +11,19 @@ def parse_args():
         description="Run inference on an AdaAttN ONNX model"
     )
     parser.add_argument(
-        "--onnx_path", required=True,
+        "--onnx_path", default="adaattn.onnx", required=False,
         help="Path to the exported ONNX model file"
     )
     parser.add_argument(
-        "--context_path", required=True,
-        help="Path to the context (content) image"
+        "--content_path", default="datasets/contents/0420a8ec521813e6f13c4a89cd20761a.jpg", required=False,
+        help="Path to the content (content) image"
     )
     parser.add_argument(
-        "--style_path", required=True,
+        "--style_path", default="datasets/styles/96fc8a810fb4f1607c252128aec5b563f99b438d.jpg@600w_600h_1c.png", required=False,
         help="Path to the style image"
     )
     parser.add_argument(
-        "--output_path", required=True,
+        "--output_path", default="result/output.jpg", required=False,
         help="Where to save the stylized output image"
     )
     return parser.parse_args()
@@ -68,42 +55,29 @@ def save_image(img_np, path):
 def main():
     args = parse_args()
 
-    # 1. Load ONNX model into ONNX Runtime
-    sess_options = ort.SessionOptions()
-    # Enable optimizations if you like:
-    sess_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+    session = ort.InferenceSession(args.onnx_path, providers=['DmlExecutionProvider', 'CPUExecutionProvider'])
 
-    # Try GPU first, fallback to CPU
-    providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
-    session = ort.InferenceSession(args.onnx_path, sess_options, providers=providers)
-
-    # 2. Prepare inputs
-    context_np = load_image(args.context_path)
+    content_np = load_image(args.content_path)
     style_np = load_image(args.style_path)
 
-    # 3. Map inputs by name
     input_meta = session.get_inputs()
-    # Expect exactly two inputs: "context" and "style"
+
     name0 = input_meta[0].name
     name1 = input_meta[1].name
     feed = {
-        name0: context_np,
+        name0: content_np,
         name1: style_np
     }
 
-    # 4. Run inference
     outputs = session.run(None, feed)
-    # Assume single output
     out_np = outputs[0]  # shape: (1, 3, H, W)
 
-    # 5. Postprocess and save
     # N x C x H x W -> C x H x W -> H x W x C
     out_img = np.squeeze(out_np, axis=0)
     out_img = np.transpose(out_img, (1, 2, 0))
     save_image(out_img, args.output_path)
 
     print(f"Stylized image written to {args.output_path}")
-
 
 if __name__ == "__main__":
     main()

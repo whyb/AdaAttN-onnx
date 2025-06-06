@@ -28,6 +28,16 @@ def parse_args():
     )
     return parser.parse_args()
 
+def resize_to_multiple_of_16(img):
+    """
+    Resize image so that width and height are both multiples of 16.
+    """
+    W, H = img.size
+    W_new = (W + 15) // 16 * 16  # 找到最接近的 16 倍数
+    H_new = (H + 15) // 16 * 16
+    
+    img_resized = img.resize((W_new, H_new), Image.LANCZOS)  # 使用高质量的 Lanczos 插值进行缩放
+    return img_resized
 
 def load_image(path):
     """
@@ -35,6 +45,8 @@ def load_image(path):
     and reshape to (1,3,H,W) float32 numpy.
     """
     img = Image.open(path).convert("RGB")
+    img = resize_to_multiple_of_16(img)
+
     img_np = np.array(img).astype(np.float32) / 255.0
     # H x W x C -> C x H x W -> 1 x C x H x W
     img_np = np.transpose(img_np, (2, 0, 1))[None, ...]
@@ -55,7 +67,8 @@ def save_image(img_np, path):
 def main():
     args = parse_args()
 
-    session = ort.InferenceSession(args.onnx_path, providers=['DmlExecutionProvider', 'CPUExecutionProvider'])
+    #session = ort.InferenceSession(args.onnx_path, providers=['DmlExecutionProvider', 'CPUExecutionProvider'])
+    session = ort.InferenceSession(args.onnx_path, providers=['CPUExecutionProvider'])
 
     content_np = load_image(args.content_path)
     style_np = load_image(args.style_path)

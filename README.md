@@ -19,12 +19,12 @@
 ## 模型信息
 
 ### ONNX 模型下载
-- 直接导出的onnx模型[`adaattn.onnx`](https://github.com/whyb/AdaAttN-onnx/blob/main/adaattn.onnx)
-- 用onnxslim优化后的onnx模型[`adaattn_slim.onnx`](https://github.com/whyb/AdaAttN-onnx/blob/main/adaattn_slim.onnx)
+- 直接导出的onnx模型[`adaattn.onnx`](https://github.com/whyb/AdaAttN-onnx/releases/download/v1.0/adaattn.onnx)
+- 用onnxslim优化后的onnx模型[`adaattn_slim.onnx`](https://github.com/whyb/AdaAttN-onnx/releases/download/v1.0/adaattn_slim.onnx)
 
 ### ONNX 模型大小
 - 导出原始大小**151MB**。
-- 经过onnxslim图优化后，**AdaAttN** ONNX 模型文件大小约 **101MB**。
+- 经过onnxslim图优化后，**AdaAttN** ONNX 模型文件大小约 **102MB**。
 
 ### 模型输入输出
 - **输入 1**：`context`，形状 `[b, 3, h, w]`

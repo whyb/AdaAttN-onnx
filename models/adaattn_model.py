@@ -270,8 +270,8 @@ class AdaAttNModel(BaseModel):
             input_names=["content", "style"],
             output_names=["output"],
             dynamic_axes={
-                "content": {0: "batch_size", 2: "height", 3: "width"},
-                "style": {0: "batch_size", 2: "height", 3: "width"},
+                "content": {0: "batch_size1", 2: "height1", 3: "width1"},
+                "style": {0: "batch_size2", 2: "height2", 3: "width2"},
                 "output": {0: "batch_size", 2: "height", 3: "width"}
             }
         )

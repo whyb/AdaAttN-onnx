@@ -19,8 +19,8 @@
 ## 模型信息
 
 ### ONNX 模型下载
-- 直接导出的onnx模型[`adaattn.onnx`](https://github.com/whyb/AdaAttN-onnx/releases/download/v1.1/adaattn.onnx)
-- 用onnxslim优化后的onnx模型[`adaattn_slim.onnx`](https://github.com/whyb/AdaAttN-onnx/releases/download/v1.1/adaattn_slim.onnx)
+- 直接导出的onnx模型[`adaattn.onnx`](https://github.com/whyb/AdaAttN-onnx/releases/download/v1.2/adaattn.onnx)
+- 用onnxslim优化后的onnx模型[`adaattn_slim.onnx`](https://github.com/whyb/AdaAttN-onnx/releases/download/v1.2/adaattn_slim.onnx)
 
 ### ONNX 模型大小
 - 导出原始大小**151MB**。

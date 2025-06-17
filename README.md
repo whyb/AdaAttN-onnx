@@ -62,6 +62,7 @@
 
 ## 效果展示
 
+WebDemo在线演示地址： https://whyb.github.io/AdaAttN-WebGPU/
 以下为本仓库风格迁移的部分效果示例：
 左1：content
 左2：Style
